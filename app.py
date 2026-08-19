@@ -173,22 +173,27 @@ tabla_general = tabla_general.sort_values(
     ascending=False
 )
 
-alertas["Probabilidad_Mora"] = (
-    alertas["Probabilidad_Mora"] * 100
-)
+# ---------------------------------------------------------
+# CLIENTES CON ALERTA PARA LOS GRÁFICOS
+# ---------------------------------------------------------
 
 # Datos exclusivos de clientes con alerta
-# Se utilizan para los gráficos
-
 alertas = df_corte[
     df_corte["Prediccion_Mora"] == 1
 ].copy()
 
+# Convertir probabilidad a porcentaje
+alertas["Probabilidad_Mora"] = (
+    alertas["Probabilidad_Mora"] * 100
+)
+
+# Ordenar de mayor a menor probabilidad
 alertas = alertas.sort_values(
     "Probabilidad_Mora",
     ascending=False
 )
 
+# Tabla utilizada por los gráficos
 tabla = alertas[
     [
         "Cliente_ID",
