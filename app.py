@@ -53,6 +53,19 @@ fecha_corte = st.selectbox(
     format_func=lambda x: pd.to_datetime(x).strftime("%d/%m/%Y")
 )
 
+# ---------------------------------------------------------
+# FILTRO DE ESTADO
+# ---------------------------------------------------------
+
+filtro_estado = st.selectbox(
+    "Filtrar clientes por estado:",
+    options=[
+        "Todos",
+        "Solo con alerta",
+        "Sin alerta"
+    ]
+)
+
 df_corte = df[
     df["Fecha_Corte"] == fecha_corte
 ].copy()
@@ -70,18 +83,6 @@ elif filtro_estado == "Sin alerta":
 else:
     df_filtrado = df_corte.copy()
 
-# ---------------------------------------------------------
-# FILTRO DE ESTADO
-# ---------------------------------------------------------
-
-filtro_estado = st.selectbox(
-    "Filtrar clientes por estado:",
-    options=[
-        "Todos",
-        "Solo con alerta",
-        "Sin alerta"
-    ]
-)
 
 # ---------------------------------------------------------
 # KPIs
@@ -175,6 +176,13 @@ tabla_general = tabla_general.sort_values(
 alertas["Probabilidad_Mora"] = (
     alertas["Probabilidad_Mora"] * 100
 )
+
+# Datos exclusivos de clientes con alerta
+# Se utilizan para los gráficos
+
+alertas = df_corte[
+    df_corte["Prediccion_Mora"] == 1
+].copy()
 
 alertas = alertas.sort_values(
     "Probabilidad_Mora",
