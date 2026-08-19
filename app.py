@@ -234,7 +234,11 @@ with col_graf2:
         top_saldo["Saldo Actual USD"][::-1]
     )
 
-    ax2.set_xlabel("Saldo Actual USD")
+    ax2.set_xlabel("Saldo Actual USD (millones)")
+
+    ax2.xaxis.set_major_formatter(
+        plt.FuncFormatter(lambda x, _: f"${x/1_000_000:.0f}M")
+    )
     ax2.set_ylabel("Cliente")
 
     for barra in barras2:
