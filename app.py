@@ -171,69 +171,91 @@ st.dataframe(
 )
 
 # ---------------------------------------------------------
-# TOP 10 CLIENTES CON MAYOR PROBABILIDAD DE MORA
+# GRÁFICOS PRINCIPALES
 # ---------------------------------------------------------
 
-st.subheader("Top 10 clientes con mayor probabilidad de mora")
+col_graf1, col_graf2 = st.columns(2)
 
-top_alertas = tabla.head(10).copy()
+# TOP 10 POR PROBABILIDAD
+with col_graf1:
 
-fig, ax = plt.subplots(figsize=(10, 5))
+    st.subheader("Top 10 por probabilidad de mora")
 
-barras = ax.barh(
-    top_alertas["Cliente"][::-1],
-    top_alertas["Probabilidad de Mora (%)"][::-1]
-)
+    top_alertas = tabla.head(10).copy()
 
-ax.set_xlabel("Probabilidad de Mora (%)")
-ax.set_ylabel("Cliente")
-ax.set_xlim(80, 101)
+    fig, ax = plt.subplots(figsize=(6, 4))
 
-for barra in barras:
-    valor = barra.get_width()
-
-    ax.text(
-        valor + 0.15,
-        barra.get_y() + barra.get_height() / 2,
-        f"{valor:.1f}%",
-        va="center"
+    barras = ax.barh(
+        top_alertas["Cliente"][::-1],
+        top_alertas["Probabilidad de Mora (%)"][::-1]
     )
 
-plt.tight_layout()
-st.pyplot(fig)
+    ax.set_xlabel("Probabilidad (%)")
+    ax.set_ylabel("Cliente")
+    ax.set_xlim(80, 101)
 
-# ---------------------------------------------------------
-# TOP 10 CLIENTES CON ALERTA POR SALDO ACTUAL
-# ---------------------------------------------------------
+    for barra in barras:
+        valor = barra.get_width()
 
-st.subheader("Top 10 clientes con alerta por saldo actual")
+        ax.text(
+            valor + 0.10,
+            barra.get_y() + barra.get_height() / 2,
+            f"{valor:.1f}%",
+            va="center",
+            fontsize=8
+        )
 
-top_saldo = tabla.sort_values(
-    "Saldo Actual USD",
-    ascending=False
-).head(10).copy()
+    ax.tick_params(axis="both", labelsize=8)
 
-fig2, ax2 = plt.subplots(figsize=(10, 5))
+    plt.tight_layout()
 
-barras2 = ax2.barh(
-    top_saldo["Cliente"][::-1],
-    top_saldo["Saldo Actual USD"][::-1]
-)
-
-ax2.set_xlabel("Saldo Actual USD")
-ax2.set_ylabel("Cliente")
-
-for barra in barras2:
-    valor = barra.get_width()
-
-    ax2.text(
-        valor,
-        barra.get_y() + barra.get_height() / 2,
-        f" ${valor:,.0f}",
-        va="center",
-        ha="left"
+    st.pyplot(
+        fig,
+        use_container_width=True
     )
 
-plt.tight_layout()
+    plt.close(fig)
 
-st.pyplot(fig2)
+
+# TOP 10 POR SALDO
+with col_graf2:
+
+    st.subheader("Top 10 por saldo actual")
+
+    top_saldo = tabla.sort_values(
+        "Saldo Actual USD",
+        ascending=False
+    ).head(10).copy()
+
+    fig2, ax2 = plt.subplots(figsize=(6, 4))
+
+    barras2 = ax2.barh(
+        top_saldo["Cliente"][::-1],
+        top_saldo["Saldo Actual USD"][::-1]
+    )
+
+    ax2.set_xlabel("Saldo Actual USD")
+    ax2.set_ylabel("Cliente")
+
+    for barra in barras2:
+        valor = barra.get_width()
+
+        ax2.text(
+            valor,
+            barra.get_y() + barra.get_height() / 2,
+            f" ${valor/1_000_000:.1f}M",
+            va="center",
+            ha="left",
+            fontsize=8
+        )
+
+    ax2.tick_params(axis="both", labelsize=8)
+
+    plt.tight_layout()
+
+    st.pyplot(
+        fig2,
+        use_container_width=True
+    )
+
+    plt.close(fig2)
