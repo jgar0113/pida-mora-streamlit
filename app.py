@@ -155,6 +155,53 @@ col5.metric(
 )
 
 # ---------------------------------------------------------
+# DETALLE DEL CLIENTE SELECCIONADO
+# ---------------------------------------------------------
+
+if cliente_seleccionado != "Todos":
+
+    detalle_cliente = df_corte[
+        df_corte["Cliente_ID"] == cliente_seleccionado
+    ].copy()
+
+    if not detalle_cliente.empty:
+
+        cliente = detalle_cliente.iloc[0]
+
+        st.subheader(f"Detalle del cliente {cliente_seleccionado}")
+
+        col_d1, col_d2, col_d3, col_d4, col_d5, col_d6 = st.columns(6)
+
+        col_d1.metric(
+            "Probabilidad de mora",
+            f"{cliente['Probabilidad_Mora'] * 100:.2f}%"
+        )
+
+        col_d2.metric(
+            "Estado",
+            "🔴 Alerta" if cliente["Prediccion_Mora"] == 1 else "🟢 Sin alerta"
+        )
+
+        col_d3.metric(
+            "Saldo actual",
+            f"${cliente['Saldo_Actual_USD']:,.2f}"
+        )
+
+        col_d4.metric(
+            "Facturas abiertas",
+            f"{int(cliente['Num_Facturas_Abiertas'])}"
+        )
+
+        col_d5.metric(
+            "Máx. días de atraso",
+            f"{cliente['Max_Dias_Atraso']:.0f}"
+        )
+
+        col_d6.metric(
+            "Prom. días de pago",
+            f"{cliente['Prom_Dias_Pago']:.1f}"
+        )
+# ---------------------------------------------------------
 # CLIENTES CON ALERTA
 # ---------------------------------------------------------
 
