@@ -192,9 +192,16 @@ if cliente_seleccionado != "Todos":
             f"{int(cliente['Num_Facturas_Abiertas'])}"
         )
 
+        max_atraso = cliente["Max_Dias_Atraso"]
+
+        if max_atraso <= 0:
+            texto_atraso = "Sin atraso"
+        else:
+            texto_atraso = f"{max_atraso:.0f} días"
+        
         col_d5.metric(
             "Máx. días de atraso",
-            f"{cliente['Max_Dias_Atraso']:.0f}"
+            texto_atraso
         )
 
         col_d6.metric(
