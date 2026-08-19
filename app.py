@@ -82,7 +82,7 @@ elif filtro_estado == "Sin alerta":
 
 else:
     df_filtrado = df_corte.copy()
-
+    
 # ---------------------------------------------------------
 # FILTRO DE CLIENTE
 # ---------------------------------------------------------
@@ -100,6 +100,8 @@ if cliente_seleccionado != "Todos":
     df_filtrado = df_filtrado[
         df_filtrado["Cliente_ID"] == cliente_seleccionado
     ].copy()
+
+
 # ---------------------------------------------------------
 # KPIs
 # ---------------------------------------------------------
@@ -170,6 +172,7 @@ st.subheader(titulo_tabla)
 tabla_general = df_filtrado[
     [
         "Cliente_ID",
+        "Estado_Riesgo",
         "Probabilidad_Mora",
         "Saldo_Actual_USD",
         "Num_Facturas_Abiertas",
@@ -185,6 +188,7 @@ tabla_general["Probabilidad_Mora"] = (
 tabla_general = tabla_general.rename(
     columns={
         "Cliente_ID": "Cliente",
+        "Estado_Riesgo": "Estado",
         "Probabilidad_Mora": "Probabilidad de Mora (%)",
         "Saldo_Actual_USD": "Saldo Actual USD",
         "Num_Facturas_Abiertas": "Facturas Abiertas",
