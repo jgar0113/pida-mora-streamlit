@@ -302,6 +302,18 @@ with col_graf1:
     ax.set_ylabel("Cliente")
     ax.set_xlim(80, 101)
 
+    ax.axvline(
+    x=80,
+    linestyle="--",
+    linewidth=1.5,
+    label="Umbral 80%"
+    )
+    
+    ax.legend(
+        loc="lower right",
+        fontsize=8
+    )
+
     for barra in barras:
         valor = barra.get_width()
 
