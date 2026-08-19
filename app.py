@@ -181,7 +181,7 @@ tabla_general = df_filtrado[
     ]
 ].copy()
 
-tabla_general["Estado"] = tabla_general["Estado"].replace({
+tabla_general["Estado_Riesgo"] = tabla_general["Estado_Riesgo"].replace({
     "Alerta de mora": "🔴 Alerta de mora",
     "Sin alerta": "🟢 Sin alerta"
 })
