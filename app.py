@@ -300,7 +300,7 @@ with col_graf1:
 
     ax.set_xlabel("Probabilidad (%)")
     ax.set_ylabel("Cliente")
-    ax.set_xlim(75, 101)
+    ax.set_xlim(78, 101)
 
     ax.axvline(
     x=80,
