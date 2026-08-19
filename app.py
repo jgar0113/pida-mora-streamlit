@@ -201,3 +201,39 @@ for barra in barras:
 
 plt.tight_layout()
 st.pyplot(fig)
+
+# ---------------------------------------------------------
+# TOP 10 CLIENTES CON ALERTA POR SALDO ACTUAL
+# ---------------------------------------------------------
+
+st.subheader("Top 10 clientes con alerta por saldo actual")
+
+top_saldo = tabla.sort_values(
+    "Saldo Actual USD",
+    ascending=False
+).head(10).copy()
+
+fig2, ax2 = plt.subplots(figsize=(10, 5))
+
+barras2 = ax2.barh(
+    top_saldo["Cliente"][::-1],
+    top_saldo["Saldo Actual USD"][::-1]
+)
+
+ax2.set_xlabel("Saldo Actual USD")
+ax2.set_ylabel("Cliente")
+
+for barra in barras2:
+    valor = barra.get_width()
+
+    ax2.text(
+        valor,
+        barra.get_y() + barra.get_height() / 2,
+        f" ${valor:,.0f}",
+        va="center",
+        ha="left"
+    )
+
+plt.tight_layout()
+
+st.pyplot(fig2)
