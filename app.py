@@ -83,7 +83,23 @@ elif filtro_estado == "Sin alerta":
 else:
     df_filtrado = df_corte.copy()
 
+# ---------------------------------------------------------
+# FILTRO DE CLIENTE
+# ---------------------------------------------------------
 
+clientes_disponibles = sorted(
+    df_filtrado["Cliente_ID"].dropna().unique()
+)
+
+cliente_seleccionado = st.selectbox(
+    "Buscar cliente:",
+    options=["Todos"] + clientes_disponibles
+)
+
+if cliente_seleccionado != "Todos":
+    df_filtrado = df_filtrado[
+        df_filtrado["Cliente_ID"] == cliente_seleccionado
+    ].copy()
 # ---------------------------------------------------------
 # KPIs
 # ---------------------------------------------------------
