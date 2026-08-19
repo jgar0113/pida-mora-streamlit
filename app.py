@@ -37,9 +37,6 @@ def cargar_datos():
 
 df = cargar_datos()
 
-# ---------------------------------------------------------
-# ÚLTIMO CORTE DISPONIBLE
-# ---------------------------------------------------------
 
 # ---------------------------------------------------------
 # FILTRO DE FECHA DE CORTE
@@ -59,6 +56,32 @@ fecha_corte = st.selectbox(
 df_corte = df[
     df["Fecha_Corte"] == fecha_corte
 ].copy()
+
+if filtro_estado == "Solo con alerta":
+    df_filtrado = df_corte[
+        df_corte["Prediccion_Mora"] == 1
+    ].copy()
+
+elif filtro_estado == "Sin alerta":
+    df_filtrado = df_corte[
+        df_corte["Prediccion_Mora"] == 0
+    ].copy()
+
+else:
+    df_filtrado = df_corte.copy()
+
+# ---------------------------------------------------------
+# FILTRO DE ESTADO
+# ---------------------------------------------------------
+
+filtro_estado = st.selectbox(
+    "Filtrar clientes por estado:",
+    options=[
+        "Todos",
+        "Solo con alerta",
+        "Sin alerta"
+    ]
+)
 
 # ---------------------------------------------------------
 # KPIs
@@ -118,9 +141,36 @@ col5.metric(
 
 st.subheader("Clientes con alerta de mora")
 
-alertas = df_corte[
-    df_corte["Prediccion_Mora"] == 1
+tabla_general = df_filtrado[
+    [
+        "Cliente_ID",
+        "Probabilidad_Mora",
+        "Saldo_Actual_USD",
+        "Num_Facturas_Abiertas",
+        "Max_Dias_Atraso",
+        "Prom_Dias_Pago"
+    ]
 ].copy()
+
+tabla_general["Probabilidad_Mora"] = (
+    tabla_general["Probabilidad_Mora"] * 100
+)
+
+tabla_general = tabla_general.rename(
+    columns={
+        "Cliente_ID": "Cliente",
+        "Probabilidad_Mora": "Probabilidad de Mora (%)",
+        "Saldo_Actual_USD": "Saldo Actual USD",
+        "Num_Facturas_Abiertas": "Facturas Abiertas",
+        "Max_Dias_Atraso": "Máx. Días de Atraso",
+        "Prom_Dias_Pago": "Prom. Días de Pago"
+    }
+)
+
+tabla_general = tabla_general.sort_values(
+    "Probabilidad de Mora (%)",
+    ascending=False
+)
 
 alertas["Probabilidad_Mora"] = (
     alertas["Probabilidad_Mora"] * 100
@@ -154,7 +204,7 @@ tabla = tabla.rename(
 )
 
 st.dataframe(
-    tabla,
+    tabla_general,
     use_container_width=True,
     hide_index=True,
     column_config={
