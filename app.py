@@ -181,6 +181,11 @@ tabla_general = df_filtrado[
     ]
 ].copy()
 
+tabla_general["Estado"] = tabla_general["Estado"].replace({
+    "Alerta de mora": "🔴 Alerta de mora",
+    "Sin alerta": "🟢 Sin alerta"
+})
+
 tabla_general["Probabilidad_Mora"] = (
     tabla_general["Probabilidad_Mora"] * 100
 )
