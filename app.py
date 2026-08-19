@@ -83,9 +83,7 @@ saldo_alerta = df_corte.loc[
     "Saldo_Actual_USD"
 ].sum()
 
-st.subheader(
-    f"Fecha de corte: {fecha_corte.strftime('%d/%m/%Y')}"
-)
+
 
 col1, col2, col3, col4, col5 = st.columns(5)
 
