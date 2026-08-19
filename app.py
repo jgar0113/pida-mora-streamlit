@@ -168,3 +168,35 @@ st.dataframe(
         )
     }
 )
+
+# ---------------------------------------------------------
+# TOP 10 CLIENTES CON MAYOR PROBABILIDAD DE MORA
+# ---------------------------------------------------------
+
+st.subheader("Top 10 clientes con mayor probabilidad de mora")
+
+top_alertas = tabla.head(10).copy()
+
+fig, ax = plt.subplots(figsize=(10, 5))
+
+barras = ax.barh(
+    top_alertas["Cliente"][::-1],
+    top_alertas["Probabilidad de Mora (%)"][::-1]
+)
+
+ax.set_xlabel("Probabilidad de Mora (%)")
+ax.set_ylabel("Cliente")
+ax.set_xlim(80, 101)
+
+for barra in barras:
+    valor = barra.get_width()
+
+    ax.text(
+        valor + 0.15,
+        barra.get_y() + barra.get_height() / 2,
+        f"{valor:.1f}%",
+        va="center"
+    )
+
+plt.tight_layout()
+st.pyplot(fig)
