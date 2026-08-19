@@ -140,7 +140,16 @@ col5.metric(
 # CLIENTES CON ALERTA
 # ---------------------------------------------------------
 
-st.subheader("Clientes con alerta de mora")
+if filtro_estado == "Solo con alerta":
+    titulo_tabla = "Clientes con alerta de mora"
+
+elif filtro_estado == "Sin alerta":
+    titulo_tabla = "Clientes sin alerta de mora"
+
+else:
+    titulo_tabla = "Clientes evaluados"
+
+st.subheader(titulo_tabla)
 
 tabla_general = df_filtrado[
     [
