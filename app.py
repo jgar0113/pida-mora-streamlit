@@ -41,7 +41,20 @@ df = cargar_datos()
 # ÚLTIMO CORTE DISPONIBLE
 # ---------------------------------------------------------
 
-fecha_corte = df["Fecha_Corte"].max()
+# ---------------------------------------------------------
+# FILTRO DE FECHA DE CORTE
+# ---------------------------------------------------------
+
+fechas_disponibles = sorted(
+    df["Fecha_Corte"].dropna().unique(),
+    reverse=True
+)
+
+fecha_corte = st.selectbox(
+    "Selecciona la fecha de corte:",
+    options=fechas_disponibles,
+    format_func=lambda x: pd.to_datetime(x).strftime("%d/%m/%Y")
+)
 
 df_corte = df[
     df["Fecha_Corte"] == fecha_corte
